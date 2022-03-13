@@ -9,6 +9,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<PackageIcon>Icon.ico</PackageIcon>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
+		<AssemblyVersion>1.0.1</AssemblyVersion>
+		<FileVersion>1.0.1</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
