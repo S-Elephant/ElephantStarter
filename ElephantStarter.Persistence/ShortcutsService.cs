@@ -29,7 +29,7 @@ public class ShortcutsService : IShortcutsService
 	public List<ShortcutMenuDto> AllShortcuts()
 	{
 		// Get top directory results.
-		List<ShortcutMenuDto> result = AllShortcutsInDirectory(_baseDirectory);
+		List<ShortcutMenuDto> result = CreateShortcutsFromDirectory(_baseDirectory);
 
 		// Get sub directories and if none, return.
 		string[] subDirectories = Directory.GetDirectories(_baseDirectory, "*", SearchOption.TopDirectoryOnly);
@@ -40,13 +40,12 @@ public class ShortcutsService : IShortcutsService
 		Bitmap subdirectoryIcon = _imageService.Folder;
 		foreach (string subDirectory in subDirectories)
 		{
-			List<ShortcutMenuDto> subDirectoryResults = AllShortcutsInDirectory(subDirectory);
+			List<ShortcutMenuDto> subDirectoryResults = CreateShortcutsFromDirectory(subDirectory);
 
 			result.Add(new ShortcutMenuDto(
 				subdirectoryIcon,
 				null,
 				GetFolderName(subDirectory),
-				null,
 				null,
 				null,
 				true,
@@ -66,7 +65,7 @@ public class ShortcutsService : IShortcutsService
 			return null;
 
 		LnkInfo? shortcutInfo = LnkHelper.GetAllInfo(path);
-		if (shortcutInfo == null || shortcutInfo.TargetPathWithArguments == null)
+		if (shortcutInfo == null)
 			return null;
 
 		Icon? icon = Icon.ExtractAssociatedIcon(path);
@@ -75,19 +74,21 @@ public class ShortcutsService : IShortcutsService
 			icon?.ToBitmap(),
 			path,
 			shortcutInfo.Name ?? "<Unknown name>",
-			shortcutInfo.TargetPath,
 			shortcutInfo.ArgumentsAsString,
 			shortcutInfo.WorkingDirectory,
 			false);
 	}
 
+	/// <summary>
+	/// Returns the folder name from the specified <paramref name="fullPath"/>.
+	/// </summary>
 	private static string GetFolderName(string fullPath)
 	{
 		return new DirectoryInfo(fullPath).Name;
 	}
 
 	[SupportedOSPlatform("windows")]
-	private List<ShortcutMenuDto> AllShortcutsInDirectory(string directory)
+	private List<ShortcutMenuDto> CreateShortcutsFromDirectory(string directory)
 	{
 		List<ShortcutMenuDto> result = new();
 

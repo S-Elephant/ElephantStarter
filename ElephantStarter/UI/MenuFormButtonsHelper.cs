@@ -62,8 +62,8 @@ namespace ElephantStarter.UI
 			btn.Image = shortcutMenuDto.IconAsBitmap;
 			btn.Size = new Size(_configurationService.Style.AppButtonSize, _configurationService.Style.AppButtonSize);
 			btn.Button.Text = shortcutMenuDto.Name;
-			string targetText = shortcutMenuDto.Target ?? "<Unknown>";
-			btn.ToolTipText = shortcutMenuDto.Arguments == null ? targetText : $"{targetText}\nArguments: {shortcutMenuDto.Arguments}";
+			string lnkFilePath = shortcutMenuDto.LnkFilePath ?? "<Unknown>";
+			btn.ToolTipText = shortcutMenuDto.Arguments == null ? lnkFilePath : $"{lnkFilePath}\nArguments: {shortcutMenuDto.Arguments}";
 			return btn;
 		}
 	}

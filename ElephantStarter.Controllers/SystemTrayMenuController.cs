@@ -30,7 +30,7 @@ namespace ElephantStarter.Controllers
 		/// <summary>
 		/// Starts the process and returns null if success. On failure it will return the error message.
 		/// </summary>
-		string? StartShortcut(IShortcutMenuTargetForStarting shortcutMenuTargetForStarting);
+		string? StartShortcut(IShortcutMenuForStarting shortcutMenuForStarting);
 	}
 
 	/// <summary>
@@ -67,30 +67,25 @@ namespace ElephantStarter.Controllers
 		/// <summary>
 		/// <inheritdoc />
 		/// </summary>
-		public string? StartShortcut(IShortcutMenuTargetForStarting shortcutMenuTargetForStarting)
+		public string? StartShortcut(IShortcutMenuForStarting shortcutMenuForStarting)
 		{
-			// Basic input validation.
-			if (shortcutMenuTargetForStarting.Target == null)
-				return $"{nameof(shortcutMenuTargetForStarting.Target)} is null.";
-
-			// Expand environment variables.
-			string fullPath = Environment.ExpandEnvironmentVariables(shortcutMenuTargetForStarting.Target);
+			// Expand environment variables if required.
 			string? workingDirectory = null;
-			if (shortcutMenuTargetForStarting.WorkingDirectory != null)
-				workingDirectory = Environment.ExpandEnvironmentVariables(shortcutMenuTargetForStarting.WorkingDirectory);
+			if (shortcutMenuForStarting.WorkingDirectory != null)
+				workingDirectory = Environment.ExpandEnvironmentVariables(shortcutMenuForStarting.WorkingDirectory);
 
 			// Start process.
-			string? errorMessage = StartProcess(fullPath, shortcutMenuTargetForStarting.Arguments, workingDirectory);
+			string? errorMessage = StartProcess(shortcutMenuForStarting.LnkFilePath, shortcutMenuForStarting.Arguments, workingDirectory);
 
 			if (errorMessage != null)
 				return errorMessage;
 
 			MainGui?.Hide();
 
-			if (shortcutMenuTargetForStarting.LnkFilePath != null)
+			if (shortcutMenuForStarting.LnkFilePath != null)
 			{
 				// Attempt to add a recently used item to the history.
-				bool isRecentlyUsedRefreshRequired = _recentlyUsed.Add(shortcutMenuTargetForStarting.LnkFilePath);
+				bool isRecentlyUsedRefreshRequired = _recentlyUsed.Add(shortcutMenuForStarting.LnkFilePath);
 
 				// If the history changed then invoke the recently used refresh action.
 				if (isRecentlyUsedRefreshRequired)
@@ -110,6 +105,7 @@ namespace ElephantStarter.Controllers
 			{
 				FileName = fullPath,
 				Arguments = arguments ?? string.Empty,
+				UseShellExecute = true, // Is required for starting .lnk files and for starting with admin privileges.
 			};
 			if (workingDirectory != null)
 				processStartInfo.WorkingDirectory = workingDirectory;
@@ -124,7 +120,6 @@ namespace ElephantStarter.Controllers
 				try
 				{
 					// Try to start it with admin privileges.
-					processStartInfo.UseShellExecute = true;
 					processStartInfo.Verb = "runas";
 					Process.Start(processStartInfo);
 				}

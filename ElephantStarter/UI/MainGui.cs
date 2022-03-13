@@ -46,16 +46,19 @@ public partial class MainGui : Form, IMainGui
 		systemTrayMenuController.MainGui = this;
 		InitializeComponent();
 
-		ProcessMenuItems();
-		systemTrayMenuController.RefreshRecentlyUsedAction = ProcessMenuItems;
+		ProcessSystemTrayItems();
+		systemTrayMenuController.RefreshRecentlyUsedAction = ProcessSystemTrayItems;
 
 		// Create buttons helper.
 		_menuFormButtonsHelper = new MenuFormButtonsHelper(shortcutsService, themeService, configurationService, TableLayoutPanel);
 
 		ApplyButtonImages(imageService);
-		ApplyThemes(themeService);
+		ApplyTheme(themeService);
 	}
 
+	/// <summary>
+	/// Applies the images to the static buttons near the top.
+	/// </summary>
 	private void ApplyButtonImages(IImageService imageService)
 	{
 		BtnOpenSettings.BackgroundImage = imageService.Settings;
@@ -64,13 +67,19 @@ public partial class MainGui : Form, IMainGui
 		BtnRestartThisApplication.BackgroundImage = imageService.Restart;
 	}
 
-	private void ApplyThemes(IThemeService themeService)
+	/// <summary>
+	/// Apply the theme to all controls where applicable.
+	/// </summary>
+	private void ApplyTheme(IThemeService themeService)
 	{
 		themeService.ApplyTheme(this);
 		themeService.ApplyTheme(false, BtnOpenSettings, BtnConfigureStartup, BtnOpenShortcutsFolder, BtnRestartThisApplication);
 	}
 
-	private void ProcessMenuItems()
+	/// <summary>
+	/// Creates and initializes the system tray items.
+	/// </summary>
+	private void ProcessSystemTrayItems()
 	{
 		CmsSystemTray.Items.Clear();
 		MenuItemsHelper menuItemsHelper = new(_imageService, CmsSystemTray, _configurationService, _recentlyUsed, _shortcutsService);
@@ -106,7 +115,7 @@ public partial class MainGui : Form, IMainGui
 	}
 
 	/// <summary>
-	///  Hides the control by setting the visible property to false.
+	/// Hides the control by setting the visible property to false.
 	/// </summary>
 	public new void Hide()
 	{
@@ -123,6 +132,9 @@ public partial class MainGui : Form, IMainGui
 		NiSystemTray.Dispose();
 	}
 
+	/// <summary>
+	/// If this form is <see cref="FormWindowState.Minimized"/> then hide it instead.
+	/// </summary>
 	private void HideInsteadOfMinimize()
 	{
 		if (WindowState == FormWindowState.Minimized)
@@ -149,10 +161,10 @@ public partial class MainGui : Form, IMainGui
 		if (sender is not ToolStripMenuItem senderAsToolStripMenuItem)
 			return;
 
-		if (senderAsToolStripMenuItem.Tag is not ShortcutMenuTargetForStarting shortcutMenuTargetForStarting || shortcutMenuTargetForStarting.Target == null)
+		if (senderAsToolStripMenuItem.Tag is not ShortcutMenuForStarting shortcutMenuForStarting)
 			return;
 
-		string? errorMessage = _systemTrayMenuController.StartShortcut(shortcutMenuTargetForStarting);
+		string? errorMessage = _systemTrayMenuController.StartShortcut(shortcutMenuForStarting);
 		TryToLogError(errorMessage);
 	}
 
@@ -186,7 +198,10 @@ public partial class MainGui : Form, IMainGui
 		if (_isVisible)
 			Hide();
 		else
+		{
 			Show();
+			Activate();
+		}
 	}
 
 	private void TsmiExit_Click(object? sender, EventArgs e)

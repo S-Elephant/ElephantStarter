@@ -123,9 +123,9 @@ namespace ElephantStarter.UI
 			ToolStripMenuItem newMenuItem = new();
 			newMenuItem.Name = $"Shortcut_{_nextShortcutNumber++}";
 			newMenuItem.Text = shortcutDto.Name;
-			if (shortcutDto.Target != null)
+			if (shortcutDto.LnkFilePath != null)
 			{
-				newMenuItem.Tag = new ShortcutMenuTargetForStarting(shortcutDto.Target, shortcutDto.LnkFilePath, shortcutDto.Arguments, shortcutDto.WorkingDirectory);
+				newMenuItem.Tag = new ShortcutMenuForStarting(shortcutDto.LnkFilePath, shortcutDto.Arguments, shortcutDto.WorkingDirectory);
 				newMenuItem.Click += shortcutMenuItemOnClick;
 			}
 			newMenuItem.Image = shortcutDto.IconAsBitmap;

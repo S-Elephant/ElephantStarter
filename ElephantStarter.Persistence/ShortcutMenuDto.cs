@@ -5,7 +5,7 @@ namespace ElephantStarter.Persistence
 	/// <summary>
 	/// Shortcut for menu DTO.
 	/// </summary>
-	public class ShortcutMenuDto : ShortcutMenuTargetForStarting
+	public class ShortcutMenuDto : ShortcutMenuForStarting
 	{
 		/// <summary>
 		/// The icon as a bitmap.
@@ -37,8 +37,8 @@ namespace ElephantStarter.Persistence
 		/// <summary>
 		/// Constructor with all properties.
 		/// </summary>
-		public ShortcutMenuDto(Bitmap? iconAsBitmap, string? lnkFilePath, string name, string? target, string? arguments, string? workingDirectory, bool isFolder, List<ShortcutMenuDto>? subItems = null)
-		: base(target, lnkFilePath, arguments, workingDirectory)
+		public ShortcutMenuDto(Bitmap? iconAsBitmap, string? lnkFilePath, string name, string? arguments, string? workingDirectory, bool isFolder, List<ShortcutMenuDto>? subItems = null)
+		: base(lnkFilePath, arguments, workingDirectory)
 		{
 			IconAsBitmap = iconAsBitmap;
 			Name = name;

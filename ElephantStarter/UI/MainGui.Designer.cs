@@ -37,6 +37,7 @@
             this.BtnConfigureStartup = new System.Windows.Forms.Button();
             this.BtnOpenShortcutsFolder = new System.Windows.Forms.Button();
             this.BtnRestartThisApplication = new System.Windows.Forms.Button();
+            this.ButtonTooltip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // NiSystemTray
@@ -90,6 +91,7 @@
             this.BtnOpenSettings.Name = "BtnOpenSettings";
             this.BtnOpenSettings.Size = new System.Drawing.Size(31, 23);
             this.BtnOpenSettings.TabIndex = 3;
+            this.ButtonTooltip.SetToolTip(this.BtnOpenSettings, "Open settings file");
             this.BtnOpenSettings.UseVisualStyleBackColor = true;
             this.BtnOpenSettings.Click += new System.EventHandler(this.BtnOpenSettings_Click);
             // 
@@ -100,6 +102,7 @@
             this.BtnConfigureStartup.Name = "BtnConfigureStartup";
             this.BtnConfigureStartup.Size = new System.Drawing.Size(31, 23);
             this.BtnConfigureStartup.TabIndex = 4;
+            this.ButtonTooltip.SetToolTip(this.BtnConfigureStartup, "Apply autostart setting");
             this.BtnConfigureStartup.UseVisualStyleBackColor = true;
             this.BtnConfigureStartup.Click += new System.EventHandler(this.BtnConfigureStartup_Click);
             // 
@@ -110,6 +113,7 @@
             this.BtnOpenShortcutsFolder.Name = "BtnOpenShortcutsFolder";
             this.BtnOpenShortcutsFolder.Size = new System.Drawing.Size(31, 23);
             this.BtnOpenShortcutsFolder.TabIndex = 5;
+            this.ButtonTooltip.SetToolTip(this.BtnOpenShortcutsFolder, "Open shortcuts folder");
             this.BtnOpenShortcutsFolder.UseVisualStyleBackColor = true;
             this.BtnOpenShortcutsFolder.Click += new System.EventHandler(this.BtnOpenShortcutsFolder_Click);
             // 
@@ -120,6 +124,7 @@
             this.BtnRestartThisApplication.Name = "BtnRestartThisApplication";
             this.BtnRestartThisApplication.Size = new System.Drawing.Size(31, 23);
             this.BtnRestartThisApplication.TabIndex = 6;
+            this.ButtonTooltip.SetToolTip(this.BtnRestartThisApplication, "Restart this application");
             this.BtnRestartThisApplication.UseVisualStyleBackColor = true;
             this.BtnRestartThisApplication.Click += new System.EventHandler(this.BtnRestartThisApplication_Click);
             // 
@@ -158,5 +163,6 @@
 		private Button BtnConfigureStartup;
 		private Button BtnOpenShortcutsFolder;
 		private Button BtnRestartThisApplication;
+		private ToolTip ButtonTooltip;
 	}
 }
