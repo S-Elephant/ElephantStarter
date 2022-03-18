@@ -9,8 +9,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<PackageIcon>Icon.ico</PackageIcon>
 		<ApplicationIcon>Icon.ico</ApplicationIcon>
-		<AssemblyVersion>1.0.1</AssemblyVersion>
-		<FileVersion>1.0.1</FileVersion>
+		<AssemblyVersion>1.0.2</AssemblyVersion>
+		<FileVersion>1.0.2</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -55,6 +55,9 @@
 		</None>
 		<None Update="Shortcuts\Google Chrome.lnk">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Shortcuts\Google.url">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="Shortcuts\Notepad.lnk">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

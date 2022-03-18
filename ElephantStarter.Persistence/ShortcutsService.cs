@@ -80,6 +80,26 @@ public class ShortcutsService : IShortcutsService
 	}
 
 	/// <summary>
+	/// <inheritdoc/>
+	/// </summary>
+	[SupportedOSPlatform("windows")]
+	public ShortcutMenuDto? UrlByPath(string path, bool ensureFileExists)
+	{
+		if (path == null || (ensureFileExists && !File.Exists(path)))
+			return null;
+
+		Icon? icon = Icon.ExtractAssociatedIcon(path);
+
+		return new ShortcutMenuDto(
+			icon?.ToBitmap(),
+			path,
+			Path.GetFileNameWithoutExtension(path),
+			null,
+			null,
+			false);
+	}
+
+	/// <summary>
 	/// Returns the folder name from the specified <paramref name="fullPath"/>.
 	/// </summary>
 	private static string GetFolderName(string fullPath)
@@ -92,11 +112,20 @@ public class ShortcutsService : IShortcutsService
 	{
 		List<ShortcutMenuDto> result = new();
 
-		string[] shortcutFiles = Directory.GetFiles(directory, "*.lnk", SearchOption.TopDirectoryOnly);
-
+		// Add shortcuts (.lnk).
+		IEnumerable<string> shortcutFiles = Directory.EnumerateFiles(directory, "*.lnk", SearchOption.TopDirectoryOnly);
 		foreach (string fullFilePath in shortcutFiles)
 		{
 			ShortcutMenuDto? newShortcut = ShortcutByPath(fullFilePath, false);
+			if (newShortcut != null)
+				result.Add(newShortcut);
+		}
+
+		// Add shortcuts (.url).
+		IEnumerable<string> urlFiles = Directory.EnumerateFiles(directory, "*.url", SearchOption.TopDirectoryOnly);
+		foreach (string fullFilePath in urlFiles)
+		{
+			ShortcutMenuDto? newShortcut = UrlByPath(fullFilePath, false);
 			if (newShortcut != null)
 				result.Add(newShortcut);
 		}

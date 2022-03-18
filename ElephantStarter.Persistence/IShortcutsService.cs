@@ -14,4 +14,9 @@ public interface IShortcutsService
 	/// Get a shortcut by filepath. Returns null if not found.
 	/// </summary>
 	ShortcutMenuDto? ShortcutByPath(string path, bool ensureFileExists);
+
+	/// <summary>
+	/// Get a 'url-shortcut' by filepath. Returns null if not found.
+	/// </summary>
+	ShortcutMenuDto? UrlByPath(string path, bool ensureFileExists);
 }

@@ -95,7 +95,7 @@ namespace ElephantStarter.UI
 			// Create and add the recently used items.
 			foreach (string shortcutPath in allRecentlyUsedItemPaths)
 			{
-				ShortcutMenuDto? shortcut = _shortcutsService.ShortcutByPath(shortcutPath, true);
+				ShortcutMenuDto? shortcut = shortcutPath.EndsWith(".url", StringComparison.InvariantCultureIgnoreCase) ? _shortcutsService.UrlByPath(shortcutPath, true) : _shortcutsService.ShortcutByPath(shortcutPath, true);
 
 				if (shortcut != null)
 				{
